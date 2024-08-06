@@ -25,108 +25,6 @@ import { useDispatch } from '../../services/store';
 import { fetchAllIngredients } from '../../services/ingredient-slice';
 import { getUser } from '../../services/user-slice';
 
-// const App = () => {
-//   const location = useLocation();
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-
-//   useEffect(() => {
-//     dispatch(getUser());
-//     dispatch(fetchAllIngredients());
-//   }, [dispatch]);
-
-//   const background = location.state?.background;
-
-//   return (
-//     <div className={styles.app}>
-//       <AppHeader />
-//       <Routes location={background || location}>
-//         <Route path='/' element={<ConstructorPage />} />
-//         <Route path='/feed' element={<Feed />} />
-//         <Route
-//           path='/login'
-//           element={
-//             <ProtectedRoute onlyUnAuth>
-//               <Login />
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route
-//           path='/register'
-//           element={
-//             <ProtectedRoute onlyUnAuth>
-//               <Register />
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route
-//           path='/forgot-password'
-//           element={
-//             <ProtectedRoute onlyUnAuth>
-//               <ForgotPassword />
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route
-//           path='/reset-password'
-//           element={
-//             <ProtectedRoute onlyUnAuth>
-//               <ResetPassword />
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route
-//           path='/profile'
-//           element={
-//             <ProtectedRoute>
-//               <Profile />
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route
-//           path='/profile/orders'
-//           element={
-//             <ProtectedRoute>
-//               <ProfileOrders />
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route path='*' element={<NotFound404 />} />
-//       </Routes>
-
-//       {/* Модальные окно */}
-//       {background && (
-//         <Routes>
-//           <Route
-//             path='/feed/:number'
-//             element={
-//               <Modal title='Order Info' onClose={() => navigate(-1)}>
-//                 <OrderInfo />
-//               </Modal>
-//             }
-//           />
-//           <Route
-//             path='/ingredients/:id'
-//             element={
-//               <Modal title='Ingredient Details' onClose={() => navigate(-1)}>
-//                 <IngredientDetails />
-//               </Modal>
-//             }
-//           />
-//           <Route
-//             path='/profile/orders/:number'
-//             element={
-//               <Modal title='Order Info' onClose={() => navigate(-1)}>
-//                 <OrderInfo />
-//               </Modal>
-//             }
-//           />
-//         </Routes>
-//       )}
-//     </div>
-//   );
-// };
-
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -137,7 +35,6 @@ const App = () => {
     dispatch(fetchAllIngredients());
   }, [dispatch]);
 
-  // Определяем, следует ли показывать модальное окно
   const background = location.state?.background;
 
   return (
@@ -195,9 +92,10 @@ const App = () => {
           }
         />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='//profile/orders/:number' element={<OrderInfo />} />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
-      {/* Модальные окна */}
       {background && (
         <Routes>
           <Route
