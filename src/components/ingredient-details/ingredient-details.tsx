@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { RootState } from '../../services/store';
