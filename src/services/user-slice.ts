@@ -1,4 +1,3 @@
-// import { updateUserApi } from '@api';
 import {
   createAsyncThunk,
   createSelector,
@@ -11,14 +10,15 @@ import {
   updateUserApi,
   getUserApi,
   TLoginData,
-  TRegisterData
+  TRegisterData,
+  registerUserApi
 } from '../utils/burger-api';
-import { deleteCookie, setCookie } from '../utils/cookie';
+import { deleteCookie, getCookie, setCookie } from '../utils/cookie';
 import { RootState } from './store';
+
 interface IUserState {
   success: boolean;
-  refreshToken: string;
-  accessToken: string;
+  isCheckAuth: boolean;
   user: TUser | null;
   isLoading: boolean;
   error: string | null;
@@ -26,12 +26,24 @@ interface IUserState {
 
 const initialState: IUserState = {
   success: false,
-  refreshToken: '',
-  accessToken: '',
+  isCheckAuth: false,
   user: null,
   isLoading: false,
   error: null
 };
+
+export const registerUser = createAsyncThunk(
+  'register/postUser',
+  async (user: TRegisterData, thunkAPI) => {
+    try {
+      const response = await registerUserApi(user);
+      return response;
+    } catch (error) {
+      console.log('Ошибка регистрации пользователя', error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const postLoginData = createAsyncThunk(
   'login/postUser',
@@ -40,7 +52,6 @@ export const postLoginData = createAsyncThunk(
       const response = await loginUserApi(loginData);
       setCookie('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
-      localStorage.setItem('accessToken', response.accessToken);
       return response;
     } catch (error) {
       console.log('Ошибка входа', error);
@@ -48,18 +59,6 @@ export const postLoginData = createAsyncThunk(
     }
   }
 );
-
-export const getUser = createAsyncThunk('user/getUser', async (_, thunkAPI) => {
-  try {
-    const response = await getUserApi();
-    console.log('Запрос  пользователя выполнен' + response);
-    setCookie('user', JSON.stringify(response.user));
-    return response;
-  } catch (error) {
-    console.log('Ошибка получения данных пользователя: ', error);
-    return thunkAPI.rejectWithValue(error);
-  }
-});
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',
@@ -75,10 +74,27 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+export const checkUserAuth = createAsyncThunk(
+  'user/checkUser',
+  async (_, { dispatch }) => {
+    if (getCookie('accessToken')) {
+      getUserApi()
+        .then((response) => {
+          dispatch(setUser(response.user));
+          dispatch(checkAuth(true));
+        })
+        .finally(() => {
+          dispatch(checkAuth(true));
+        });
+    } else {
+      dispatch(checkAuth(true));
+    }
+  }
+);
+
 export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
   try {
     const response = await logoutApi();
-    localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     deleteCookie('accessToken');
     console.log('Выход из системы выполнен');
@@ -92,9 +108,30 @@ export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+    checkAuth: (state, action) => {
+      state.isCheckAuth = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        setCookie('accessToken', action.payload.accessToken);
+        state.user = action.payload.user;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
       .addCase(postLoginData.pending, (state, action) => {
         state.success = false;
         state.isLoading = true;
@@ -104,27 +141,11 @@ export const userSlice = createSlice({
         state.success = true;
         state.isLoading = false;
         state.user = action.payload.user;
-        // localStorage.setItem('accessToken', action.payload.accessToken);
       })
       .addCase(postLoginData.rejected, (state, action) => {
         state.success = false;
         state.isLoading = false;
         state.error = action.payload as string;
-      });
-    builder
-      .addCase(getUser.pending, (state) => {
-        state.success = false;
-        state.isLoading = false;
-        state.error = null;
-      })
-      .addCase(getUser.fulfilled, (state, action) => {
-        state.success = true;
-        state.user = action.payload.user;
-      })
-      .addCase(getUser.rejected, (state, action) => {
-        state.success = false;
-        state.error = action.payload as string;
-        console.log('Не загружено');
       })
       .addCase(updateUser.pending, (state) => {
         state.success = false;
@@ -142,21 +163,26 @@ export const userSlice = createSlice({
         state.error = action.payload as string;
         console.log('данные не изменены');
       })
+      .addCase(checkUserAuth.fulfilled, (state, action) => {
+        state.success = true;
+      })
       .addCase(logout.fulfilled, (state) => {
-        state.success = false;
         state.user = null;
+        // state.success = false;
       });
   }
 });
 
 export default userSlice.reducer;
 
-export const selectRefreshToken = (state: RootState) =>
-  state.userSlice.refreshToken;
-export const selectAccessToken = (state: RootState) =>
-  state.userSlice.accessToken;
 export const selectUser = (state: RootState) => state.userSlice.user;
 export const selectUserName = createSelector(
   [selectUser],
   (user) => user?.name
 );
+export const selectIsLoading = (state: RootState) => state.userSlice.isLoading;
+
+export const { setUser, checkAuth } = userSlice.actions;
+export const selectRegisterUser = (state: RootState) => state.userSlice.user;
+export const selectIsCheckAuth = (state: RootState) =>
+  state.userSlice.isCheckAuth;

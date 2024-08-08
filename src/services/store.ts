@@ -11,7 +11,7 @@ import {
 
 import { Middleware } from '@reduxjs/toolkit';
 import orderSlice from './order-slice';
-import registerSlice from './register-slice';
+import registerSlice from './user-slice';
 import userSlice from './user-slice';
 
 const loggerMiddleware: Middleware = (store) => (next) => (action) => {
@@ -24,7 +24,6 @@ const rootReducer = combineReducers({
   constructorSlice: constructorReducer,
   feedsSlice: feedsSlice,
   orderSlice: orderSlice,
-  registerSlice: registerSlice,
   userSlice: userSlice
 });
 

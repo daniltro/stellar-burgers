@@ -1,10 +1,8 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import { selectAllOrders } from '../../services/feeds-slice';
 import { useSelector } from '../../services/store';
-import { useNavigate } from 'react-router-dom';
 import { fetchFeeds } from '../../services/feeds-slice';
 import { useDispatch } from '../../services/store';
 import { selectIsLoading } from '../../services/feeds-slice';

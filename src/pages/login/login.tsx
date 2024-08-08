@@ -11,6 +11,7 @@ export const Login: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const loginData: TLoginData = {
@@ -19,12 +20,6 @@ export const Login: FC = () => {
     };
     dispatch(postLoginData(loginData));
   };
-  useEffect(() => {
-    if (user) {
-      navigate('/');
-    }
-  }, [user, navigate]);
-
   return (
     <LoginUI
       errorText=''

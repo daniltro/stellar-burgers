@@ -17,21 +17,22 @@ import { NotFound404 } from '../../pages/not-fount-404/not-fount-404';
 import { IngredientDetails } from '../../components/ingredient-details/ingredient-details';
 import { Modal } from '../../components/modal/modal';
 import { OrderInfo } from '../../components/order-info/order-info';
-import { fetchFeeds } from '../../services/feeds-slice';
 
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { fetchAllIngredients } from '../../services/ingredient-slice';
-import { getUser } from '../../services/user-slice';
-
+import { checkUserAuth } from '../../services/user-slice';
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(checkUserAuth());
+  }, []);
+
+  useEffect(() => {
     dispatch(fetchAllIngredients());
   }, [dispatch]);
 
