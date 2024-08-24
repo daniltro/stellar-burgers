@@ -6,11 +6,14 @@ import {
   clearConstructor,
   selectBun,
   selectIngredients
-} from '../../services/constructor-slice';
+} from '../../services/constructor-slice/constructor-slice';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../services/store';
-import { fetchOrderRequest, resetOrderModal } from '../../services/order-slice';
-import { selectUser } from '../../services/user-slice';
+import {
+  fetchOrderRequest,
+  resetOrderModal
+} from '../../services/order-slice/order-slice';
+import { selectUser } from '../../services/user-slice/user-slice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */

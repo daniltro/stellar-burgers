@@ -4,33 +4,16 @@ import {
   createSlice
 } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { RootState, useDispatch, useSelector } from './store';
+import { RootState, useDispatch, useSelector } from '../store';
 
 import {
   getOrderByNumberApi,
   getOrdersApi,
   orderBurgerApi,
   TNewOrderResponse
-} from '../utils/burger-api';
-import { fetchFeeds } from './feeds-slice';
+} from '../../utils/burger-api';
 
-interface IOrderSliceState {
-  success: boolean;
-  order: TOrder | null;
-  profileOrders: TOrder[] | null;
-  name: string | null;
-  isLoading: boolean;
-  error: string | null;
-}
-
-const initialState: IOrderSliceState = {
-  success: false,
-  order: null,
-  profileOrders: null,
-  name: null,
-  isLoading: false,
-  error: null
-};
+import { initialState } from './constants';
 
 export const fetchOrderDetails = createAsyncThunk(
   'order/fetchOrderDetails',

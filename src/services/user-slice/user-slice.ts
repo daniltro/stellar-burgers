@@ -12,25 +12,10 @@ import {
   TLoginData,
   TRegisterData,
   registerUserApi
-} from '../utils/burger-api';
-import { deleteCookie, getCookie, setCookie } from '../utils/cookie';
-import { RootState } from './store';
-
-interface IUserState {
-  success: boolean;
-  isCheckAuth: boolean;
-  user: TUser | null;
-  isLoading: boolean;
-  error: string | null;
-}
-
-const initialState: IUserState = {
-  success: false,
-  isCheckAuth: false,
-  user: null,
-  isLoading: false,
-  error: null
-};
+} from '../../utils/burger-api';
+import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
+import { RootState } from '../store';
+import { initialState } from './constants';
 
 export const registerUser = createAsyncThunk(
   'register/postUser',
@@ -52,6 +37,7 @@ export const postLoginData = createAsyncThunk(
       const response = await loginUserApi(loginData);
       setCookie('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
+      localStorage.setItem('accessToken', response.accessToken);
       return response;
     } catch (error) {
       console.log('Ошибка входа', error);
@@ -96,6 +82,7 @@ export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
   try {
     const response = await logoutApi();
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('accessToken');
     deleteCookie('accessToken');
     console.log('Выход из системы выполнен');
     return response;
@@ -168,7 +155,6 @@ export const userSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
-        // state.success = false;
       });
   }
 });

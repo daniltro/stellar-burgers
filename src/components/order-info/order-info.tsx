@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from '../../services/store';
 import {
   fetchAllIngredients,
   selectedAllIngredients
-} from '../../services/ingredient-slice';
+} from '../../services/ingredient-slice/ingredient-slice';
 import { useParams } from 'react-router-dom';
-import { orderSelect } from '../../services/order-slice';
-import { fetchOrderDetails } from '../../services/order-slice';
+import { orderSelect } from '../../services/order-slice/order-slice';
+import { fetchOrderDetails } from '../../services/order-slice/order-slice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
