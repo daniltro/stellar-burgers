@@ -1,5 +1,6 @@
 {
   "name": "react-canonical",
+  "homepage": "https://daniltro.github.io/stellar-burgers",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -69,6 +70,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "eslint-webpack-plugin": "^4.0.1",
     "fetch-mock": "^9.11.0",
+    "gh-pages": "^6.1.1",
     "html-webpack-plugin": "^5.6.0",
     "jest": "^29.7.0",
     "jest-css-modules-transform": "^4.4.2",
@@ -87,6 +89,9 @@
     "url-loader": "^4.1.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "build": "webpack --mode=production",
     "start": "webpack serve --mode=development",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
