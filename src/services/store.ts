@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from '@reduxjs/toolkit';
-import ingredientsReducer from './ingredient-slice';
-import constructorReducer from './constructor-slice';
-import feedsSlice from './feeds-slice';
+import ingredientsReducer from './ingredient-slice/ingredient-slice';
+import constructorReducer from './constructor-slice/constructor-slice';
+import feedsSlice from './feed-slice/feeds-slice';
 import {
   TypedUseSelectorHook,
   useDispatch as dispatchHook,
@@ -10,16 +10,15 @@ import {
 } from 'react-redux';
 
 import { Middleware } from '@reduxjs/toolkit';
-import orderSlice from './order-slice';
-import registerSlice from './user-slice';
-import userSlice from './user-slice';
+import orderSlice from './order-slice/order-slice';
+import userSlice from './user-slice/user-slice';
 
 const loggerMiddleware: Middleware = (store) => (next) => (action) => {
   console.log('Next state:', store.getState());
   return next(action);
 };
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   ingredientsSlice: ingredientsReducer,
   constructorSlice: constructorReducer,
   feedsSlice: feedsSlice,

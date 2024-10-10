@@ -5,7 +5,7 @@ import {
   selectedBuns,
   selectedMains,
   selectedSauces
-} from '../../services/ingredient-slice';
+} from '../../services/ingredient-slice/ingredient-slice';
 // import { getfeeds } from '../../services/feeds-slice';
 
 import { TTabMode } from '@utils-types';

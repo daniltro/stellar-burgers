@@ -21,8 +21,8 @@ import { OrderInfo } from '../../components/order-info/order-info';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchAllIngredients } from '../../services/ingredient-slice';
-import { checkUserAuth } from '../../services/user-slice';
+import { fetchAllIngredients } from '../../services/ingredient-slice/ingredient-slice';
+import { checkUserAuth } from '../../services/user-slice/user-slice';
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();

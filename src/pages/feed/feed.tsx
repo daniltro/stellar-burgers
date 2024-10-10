@@ -1,11 +1,11 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
-import { selectAllOrders } from '../../services/feeds-slice';
+import { selectAllOrders } from '../../services/feed-slice/feeds-slice';
 import { useSelector } from '../../services/store';
-import { fetchFeeds } from '../../services/feeds-slice';
+import { fetchFeeds } from '../../services/feed-slice/feeds-slice';
 import { useDispatch } from '../../services/store';
-import { selectIsLoading } from '../../services/feeds-slice';
+import { selectIsLoading } from '../../services/feed-slice/feeds-slice';
 
 export const Feed: FC = () => {
   const dispatch = useDispatch();

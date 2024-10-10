@@ -1,10 +1,10 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import { TLoginData } from '../../utils/burger-api';
-import { postLoginData } from '../../services/user-slice';
+import { postLoginData } from '../../services/user-slice/user-slice';
 import { useDispatch, useSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
-import { selectUser } from '../../services/user-slice';
+import { selectUser } from '../../services/user-slice/user-slice';
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
