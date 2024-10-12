@@ -12,7 +12,6 @@ import {
   orderBurgerApi,
   TNewOrderResponse
 } from '../utils/burger-api';
-import { fetchFeeds } from './feeds-slice';
 
 interface IOrderSliceState {
   success: boolean;

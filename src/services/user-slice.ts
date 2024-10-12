@@ -52,6 +52,7 @@ export const postLoginData = createAsyncThunk(
       const response = await loginUserApi(loginData);
       setCookie('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
+      localStorage.setItem('accessToken', response.accessToken);
       return response;
     } catch (error) {
       console.log('Ошибка входа', error);
